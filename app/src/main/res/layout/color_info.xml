@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="4dp"
+    android:elevation="2dp">
+
+    <org.ranbi.adaptiveiconanalyzer.SquareImageView
+        android:id="@+id/color_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/color_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dominant:"
+            android:layout_marginTop="2dp"
+            android:layout_marginStart="2dp"/>
+        <TextView
+            android:id="@+id/color_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="#000000"
+            android:layout_marginTop="2dp"
+            android:layout_marginStart="1dp"/>
+    </LinearLayout>
+</FrameLayout>

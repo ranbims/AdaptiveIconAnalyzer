@@ -17,11 +17,25 @@ import java.util.List;
  * A custom Loader that loads all of the installed applications.
  */
 public class AppListLoader extends AsyncTaskLoader<List<AppEntry>> {
+
     final InterestingConfigChanges mLastConfig = new InterestingConfigChanges();
     final PackageManager mPm;
 
     List<AppEntry> mApps;
     PackageIntentReceiver mPackageObserver;
+
+    private static AppListLoader sInstance = null;
+
+    public static AppListLoader getInstance(Context context) {
+        if (sInstance == null) {
+            sInstance = new AppListLoader(context);
+        }
+        return sInstance;
+    }
+
+    public List<AppEntry> getApps() {
+        return mApps;
+    }
 
     public AppListLoader(Context context) {
         super(context);

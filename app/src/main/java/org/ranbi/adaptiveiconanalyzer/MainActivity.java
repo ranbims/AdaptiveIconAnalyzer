@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public Loader<List<AppEntry>> onCreateLoader(int id, @Nullable Bundle args) {
         // This is called when a new Loader needs to be created.  This
         // sample only has one Loader with no arguments, so it is simple.
-        return new AppListLoader(this);
+        return AppListLoader.getInstance(this);
     }
 
     @Override

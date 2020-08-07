@@ -1,6 +1,7 @@
 package org.ranbi.adaptiveiconanalyzer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 
@@ -45,12 +46,19 @@ public class AppListLoader extends AsyncTaskLoader<List<AppEntry>> {
 
         final Context context = getContext();
 
+        Intent launchIntent = new Intent();
+        launchIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+
         // Create corresponding array of entries and load their labels.
-        List<AppEntry> entries = new ArrayList<AppEntry>(apps.size());
-        for (int i=0; i<apps.size(); i++) {
-            AppEntry entry = new AppEntry(this, apps.get(i));
-            entry.loadLabel(context);
-            entries.add(entry);
+        List<AppEntry> entries = new ArrayList<AppEntry>();
+        for (int i = 0; i < apps.size(); i++) {
+            ApplicationInfo info = apps.get(i);
+            launchIntent.setPackage(info.packageName);
+            if (mPm.queryIntentActivities(launchIntent, 0).size() > 0) {
+                AppEntry entry = new AppEntry(this, info);
+                entry.loadLabel(context);
+                entries.add(entry);
+            }
         }
 
         // Sort the list.

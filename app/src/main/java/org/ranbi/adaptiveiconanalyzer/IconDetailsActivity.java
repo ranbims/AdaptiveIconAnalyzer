@@ -1,6 +1,5 @@
 package org.ranbi.adaptiveiconanalyzer;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.graphics.Bitmap;
@@ -11,7 +10,6 @@ import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +21,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.palette.graphics.Palette;
 
-public class IconDetailsActivity extends AppCompatActivity {
+public class IconDetailsActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final int BITMAP_SIZE = 48;
+    private static final int BITMAP_SIZE = 120;
 
     private ImageView mRawIcon;
     private ImageView mForeground;
@@ -75,8 +73,7 @@ public class IconDetailsActivity extends AppCompatActivity {
             mRawIcon.setImageDrawable(mIconDrawable);
         }
 
-//        int bitmapSize = dip2px(this, BITMAP_SIZE);
-        int bitmapSize = 120;
+        int bitmapSize = BITMAP_SIZE;
 
         Bitmap paletteBackgroundBitmap = Bitmap.createBitmap(bitmapSize, bitmapSize, Bitmap.Config.ARGB_8888);
         Canvas backgroundCanvas = new Canvas(paletteBackgroundBitmap);
@@ -118,6 +115,8 @@ public class IconDetailsActivity extends AppCompatActivity {
         ((TextView) view.findViewById(R.id.color_value)).setText("#" + Integer.toHexString(color));
         ImageView imageView = view.findViewById(R.id.color_view);
         imageView.setImageDrawable(new ColorDrawable(color));
+        imageView.setTag(color);
+        imageView.setOnClickListener(this);
 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 0, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -126,7 +125,14 @@ public class IconDetailsActivity extends AppCompatActivity {
         return view;
     }
 
-    public static int dip2px(Context context, float dpValue) {
-        return (int) (dpValue * context.getResources().getDisplayMetrics().density + 0.5f);
+
+    @Override
+    public void onClick(View view) {
+        if (view instanceof ImageView) {
+            int color = (int) view.getTag();
+            IconWithBgPreviewDialogFragment fragment = new IconWithBgPreviewDialogFragment();
+            fragment.setParameters(color, mIconDrawable);
+            fragment.show(getSupportFragmentManager(), null);
+        }
     }
 }
